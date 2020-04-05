@@ -1,0 +1,15 @@
+{
+    "name": "StateObserverSingleton",
+    "references": [
+        "GUID:5f684b4dfa58f4f4395223f1c7e634a1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,21 @@
+{
+    "name": "com.bigbadstudios.library.stateobserver",
+    "version": "1.0.0",
+    "displayName": "BBX StateObserver",
+    "description": "A small observer pattern system using C# actions.",
+    "unity": "2019.1",
+    "author": {
+        "name": "Abban Dunne",
+        "url": "https://abandon.ie"
+    },
+    "samples": [
+        {
+            "displayName": "Singleton",
+            "description": "Example of using the StateObserver as a singleton",
+            "path": "Samples~/Singleton"
+        }
+    ],
+    "dependencies": {
+        
+    }
+}
