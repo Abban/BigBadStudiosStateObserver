@@ -1,6 +1,6 @@
 using System;
 
-namespace BBX.Library.StateObserver
+namespace GF.Library.StateObserver
 {
     public interface IObservableStateProperty
     {

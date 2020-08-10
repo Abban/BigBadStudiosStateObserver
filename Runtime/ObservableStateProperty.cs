@@ -1,4 +1,4 @@
-namespace BBX.Library.StateObserver
+namespace GF.Library.StateObserver
 {
     using System;
 

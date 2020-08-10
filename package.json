@@ -1,7 +1,7 @@
 {
-    "name": "com.bigbadstudios.library.stateobserver",
+    "name": "com.gamefarts.library.stateobserver",
     "version": "1.0.0",
-    "displayName": "BBX StateObserver",
+    "displayName": "Game Farts StateObserver",
     "description": "A small observer pattern system using C# actions.",
     "unity": "2019.1",
     "author": {

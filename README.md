@@ -1,4 +1,4 @@
-# Big Bad Studios Unity State Observer
+# Game Farts Unity State Observer
 
 This is a small library for observing state in Unity.
 

@@ -1,7 +1,6 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace BBX.Library.StateObserver.Tests
+namespace GF.Library.StateObserver.Tests
 {
     [TestFixture]
     public class StateBrokerTests
