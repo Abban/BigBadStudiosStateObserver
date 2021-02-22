@@ -7,6 +7,8 @@ namespace StateBrokerSingleton
         private void Update()
         {
             if (!Input.GetButtonDown("Fire1") && !Input.GetButtonDown("Fire2")) return;
+            
+            StateManager.StartTransaction();
 
             if (Input.GetButtonDown("Fire1"))
             {
@@ -18,7 +20,7 @@ namespace StateBrokerSingleton
                 StateManager.AddCoins();
             }
             
-            StateManager.NotifyObservers();
+            StateManager.Commit();
         }
     }
 }

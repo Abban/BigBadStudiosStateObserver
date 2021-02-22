@@ -1,10 +1,11 @@
-namespace GF.Library.StateObserver
+namespace GF.Library.StateBroker
 {
     using System;
     using System.Collections.Generic;
 
-    public class ObservableStateBroker : IStatePropertyBroker, IStateObserverNotifier
+    public class StateBroker : IStateBroker
     {
+        private bool _isTransacting;
         private readonly List<IObservableStateProperty> _changedProperties = new List<IObservableStateProperty>();
 
 
@@ -12,17 +13,40 @@ namespace GF.Library.StateObserver
         public void SetChanged(IObservableStateProperty property)
         {
             _changedProperties.Add(property);
+            if (!_isTransacting)
+            {
+                Commit();
+            }
         }
 
-    
+        
+        /// <inheritdoc />
+        public void StartTransaction()
+        {
+            if (_isTransacting)
+            {
+                throw new TransactionException();
+            }
+
+            _isTransacting = true;
+        }
+
+        
+        /// <inheritdoc />
+        public void Commit()
+        {
+            NotifyObservers();
+            _isTransacting = false;
+        }
+
+
         /// <summary>
         /// Loops changed values and their delegates and manually notifies each delegate one time 
         /// </summary>
-        public void NotifyObservers()
+        private void NotifyObservers()
         {
             var called = new List<Delegate>();
         
-            // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var property in _changedProperties)
             {
                 var delegates = property.Action.GetInvocationList();

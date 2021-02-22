@@ -1,4 +1,4 @@
-# Game Farts Unity State Observer
+# Game Farts Unity State Broker
 
 This is a small library for observing state in Unity.
 
@@ -10,12 +10,12 @@ You can install this in Unity as a Package by going to `Window > Package Manager
 
 ## Usage
 1. Create an class to hold your state variables. Each variable should implement the `IObservableStateProperty` interface.
-2. In your initialisation instantiate an `ObservableStateBroker`. 
+2. In your initialisation instantiate an `StateBroker`. 
 3. Create your state variables and inject the broker ito each. Second parameter is a default value so you can load this from save data or something if you need to.
 4. Instantiate your state class and inject your variables.
 
     ```c#
-    StateBroker = new ObservableStateBroker();
+    StateBroker = new StateBroker();
     
     var stars = new ObservableStateProperty<int>(StateBroker, 10);
     var coins = new ObservableStateProperty<int>(StateBroker, 10);
@@ -27,9 +27,14 @@ You can install this in Unity as a Package by going to `Window > Package Manager
     ```c#
     GameState.Stars.Action += ObserverCallback;
     ```
-6. To fire a notification after values have changed you can call the `NotifySubscribers()` method on the `ObservableStateBroker`.
+6. To start a state transaction you tell the `StateBroker`.
+   ```c#
+   StateBroker.StartTransaction();
+   ```
+7. To fire a notification after values have changed you can call the `Commit()` method on the `StateBroker`.
     ```c#
-    StateBroker.NotifyObservers();
+    StateBroker.Commit();
     ```
+8. If you change a state value without starting a transaction it will trigger an immediate commit.
    
 **Tip:** Use a `ScriptableObject` as your GameState and you can pass it around easier.

@@ -1,4 +1,4 @@
-using GF.Library.StateObserver;
+using GF.Library.StateBroker;
 
 namespace StateBrokerSingleton
 {

@@ -1,10 +1,10 @@
-namespace GF.Library.StateObserver
+namespace GF.Library.StateBroker
 {
     using System;
 
     public class ObservableStateProperty<T> : IObservableStateProperty<T>
     {
-        private readonly IStatePropertyBroker _stateBroker;
+        private readonly IStateBroker _stateBroker;
 
         private T _value;
 
@@ -26,7 +26,7 @@ namespace GF.Library.StateObserver
         public Action Action { get; set; } = () => { };
 
         public ObservableStateProperty(
-            IStatePropertyBroker stateBroker,
+            IStateBroker stateBroker,
             T startValue)
         {
             _stateBroker = stateBroker;

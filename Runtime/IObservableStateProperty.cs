@@ -1,6 +1,6 @@
 using System;
 
-namespace GF.Library.StateObserver
+namespace GF.Library.StateBroker
 {
     public interface IObservableStateProperty
     {

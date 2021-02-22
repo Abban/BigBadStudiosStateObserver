@@ -1,5 +1,4 @@
-﻿using System;
-using GF.Library.StateObserver;
+﻿using GF.Library.StateBroker;
 using UnityEngine;
 
 namespace StateBrokerSingleton
@@ -7,7 +6,7 @@ namespace StateBrokerSingleton
     public class StateManager : MonoBehaviour
     {
         public GameState GameState { get; private set; }
-        public ObservableStateBroker StateBroker { get; private set; }
+        public IStateBroker StateBroker { get; private set; }
         private static StateManager _stateManager;
         
         public static IObservableStateProperty<int> Coins => Instance.GameState.Coins;
@@ -38,7 +37,7 @@ namespace StateBrokerSingleton
         {
             if (StateBroker != null) return;
             
-            StateBroker = new ObservableStateBroker();
+            StateBroker = new StateBroker();
 
             var stars = new ObservableStateProperty<int>(StateBroker, 10);
             var coins = new ObservableStateProperty<int>(StateBroker, 10);
@@ -59,9 +58,15 @@ namespace StateBrokerSingleton
         }
 
 
-        public static void NotifyObservers()
+        public static void StartTransaction()
         {
-            Instance.StateBroker.NotifyObservers();
+            Instance.StateBroker.StartTransaction();
+        }
+
+
+        public static void Commit()
+        {
+            Instance.StateBroker.Commit();
         }
     }
 }
