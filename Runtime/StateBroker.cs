@@ -1,26 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace GF.Library.StateBroker
 {
-    using System;
-    using System.Collections.Generic;
-
     public class StateBroker : IStateBroker
     {
         private bool _isTransacting;
-        private readonly List<IObservableStateProperty> _changedProperties = new List<IObservableStateProperty>();
+        private readonly List<IObservableStateProperty> _properties = new List<IObservableStateProperty>();
 
 
-        /// <inheritdoc />
-        public void SetChanged(IObservableStateProperty property)
+        public void AddProperty(IObservableStateProperty property)
         {
-            _changedProperties.Add(property);
-            if (!_isTransacting)
+            if (_properties.Contains(property))
             {
-                Commit();
+                throw new Exception("Tried to add the same property to the broker twice");
             }
+            _properties.Add(property);
         }
 
         
-        /// <inheritdoc />
+        public void RemoveProperty(IObservableStateProperty property)
+        {
+            if (!_properties.Contains(property))
+            {
+                throw new Exception("Tried to remove an unknown property from the broker");
+            }
+            _properties.Remove(property);
+        }
+
+        
         public void StartTransaction()
         {
             if (_isTransacting)
@@ -32,22 +41,18 @@ namespace GF.Library.StateBroker
         }
 
         
-        /// <inheritdoc />
         public void Commit()
         {
             NotifyObservers();
             _isTransacting = false;
         }
 
-
-        /// <summary>
-        /// Loops changed values and their delegates and manually notifies each delegate one time 
-        /// </summary>
+        
         private void NotifyObservers()
         {
             var called = new List<Delegate>();
         
-            foreach (var property in _changedProperties)
+            foreach (var property in _properties.Where(x => x.Dirty))
             {
                 var delegates = property.Action.GetInvocationList();
 
@@ -58,9 +63,9 @@ namespace GF.Library.StateBroker
                     @delegate.DynamicInvoke();
                     called.Add(@delegate);
                 }
+                
+                property.SetClean();
             }
-        
-            _changedProperties.Clear();
         }
     }
 }

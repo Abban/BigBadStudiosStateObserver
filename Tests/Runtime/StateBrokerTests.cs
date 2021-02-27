@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace GF.Library.StateBroker.Tests
 {
@@ -27,31 +28,43 @@ namespace GF.Library.StateBroker.Tests
         {
             _stateBroker = new StateBroker();
 
-            var stars = new ObservableStateProperty<int>(_stateBroker, 10);
-            var coins = new ObservableStateProperty<int>(_stateBroker, 10);
+            var stars = new ObservableStateProperty<int>(10);
+            var coins = new ObservableStateProperty<int>(10);
+            
+            _stateBroker.AddProperty(stars);
+            _stateBroker.AddProperty(coins);
             
             _state = new State(stars, coins);
         }
 
         [Test]
-        public void WhenNotTransacting_NotifiesObserversImmediately()
+        public void WhenAddSamePropertyTwice_ThrowsException()
         {
-            var stateObserverCalled = false;
+            _stateBroker = new StateBroker();
+            var stars = new ObservableStateProperty<int>(10);
             
-            void ObserverCallback()
+            _stateBroker.AddProperty(stars);
+
+            Assert.Throws<Exception>(() =>
             {
-                stateObserverCalled = true;
-            }
-            
-            _state.Stars.Action += ObserverCallback;
-            _state.Stars.Value++;
-            
-            Assert.That(stateObserverCalled);
+                _stateBroker.AddProperty(stars);
+            });
         }
         
-        
         [Test]
-        public void WhenTransacting_NotifiesObserversOnlyOnCommit()
+        public void WhenRemovePropertyThatDoesNotExist_ThrowsException()
+        {
+            _stateBroker = new StateBroker();
+            var stars = new ObservableStateProperty<int>(10);
+            
+            Assert.Throws<Exception>(() =>
+            {
+                _stateBroker.RemoveProperty(stars);
+            });
+        }
+
+        [Test]
+        public void WhenTransacting_NotifiesObserversOnCommit()
         {
             var stateObserverCalled = false;
             
@@ -60,7 +73,7 @@ namespace GF.Library.StateBroker.Tests
                 stateObserverCalled = true;
             }
             
-            _state.Stars.Action += ObserverCallback;
+            _state.Stars.Subscribe(ObserverCallback);
             
             _stateBroker.StartTransaction();
             
@@ -93,7 +106,7 @@ namespace GF.Library.StateBroker.Tests
                 stateObserverCalled = true;
             }
             
-            _state.Stars.Action += ObserverCallback;
+            _state.Stars.Subscribe(ObserverCallback);
             
             _stateBroker.StartTransaction();
             _state.Stars.Value++;
@@ -113,8 +126,8 @@ namespace GF.Library.StateBroker.Tests
                 stateObserverCalledCount++;
             }
             
-            _state.Stars.Action += ObserverCallback;
-            _state.Coins.Action += ObserverCallback;
+            _state.Stars.Subscribe(ObserverCallback);
+            _state.Coins.Subscribe(ObserverCallback);
             
             _stateBroker.StartTransaction();
             _state.Stars.Value++;

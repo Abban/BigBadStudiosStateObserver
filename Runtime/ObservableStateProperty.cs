@@ -4,8 +4,6 @@ namespace GF.Library.StateBroker
 
     public class ObservableStateProperty<T> : IObservableStateProperty<T>
     {
-        private readonly IStateBroker _stateBroker;
-
         private T _value;
 
         public T Value
@@ -18,18 +16,38 @@ namespace GF.Library.StateBroker
 
                 if (!Equals(value, oldValue))
                 {
-                    _stateBroker.SetChanged(this);
+                    Dirty = true;
                 }
             }
         }
-    
-        public Action Action { get; set; } = () => { };
 
-        public ObservableStateProperty(
-            IStateBroker stateBroker,
-            T startValue)
+        public Action Action { get; private set; } = () => { };
+
+        public bool Dirty { get; private set; }
+
+        public void SetClean()
         {
-            _stateBroker = stateBroker;
+            Dirty = false;
+        }
+
+        public void Subscribe(Action subscriber)
+        {
+            Action += subscriber;
+        }
+
+        public void Unsubscribe(Action subscriber)
+        {
+            Action -= subscriber;
+        }
+
+        public void Invoke()
+        {
+            Action.Invoke();
+            SetClean();
+        }
+
+        public ObservableStateProperty(T startValue)
+        {
             _value = startValue;
         }
     }

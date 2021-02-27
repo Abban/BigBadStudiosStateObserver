@@ -1,8 +1,8 @@
 {
     "name": "com.gamefarts.library.statebroker",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "displayName": "Game Farts StateBroker",
-    "description": "A small observer/broker pattern system using C# actions.",
+    "description": "A small transactional state observer/broker pattern system using C# actions.",
     "unity": "2019.1",
     "author": {
         "name": "Abban Dunne",

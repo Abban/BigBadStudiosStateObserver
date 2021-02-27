@@ -6,15 +6,15 @@ namespace StateBrokerSingleton
     {
         private void OnEnable()
         {
-            StateManager.Stars.Action += OnStateChanged;
-            StateManager.Coins.Action += OnStateChanged;
+            StateManager.Stars.Subscribe(OnStateChanged);
+            StateManager.Coins.Subscribe(OnStateChanged);
         }
 
 
         private void OnDisable()
         {
-            StateManager.Stars.Action -= OnStateChanged;
-            StateManager.Coins.Action -= OnStateChanged;
+            StateManager.Stars.Unsubscribe(OnStateChanged);
+            StateManager.Coins.Unsubscribe(OnStateChanged);
         }
 
 

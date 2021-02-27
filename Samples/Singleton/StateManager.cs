@@ -39,9 +39,12 @@ namespace StateBrokerSingleton
             
             StateBroker = new StateBroker();
 
-            var stars = new ObservableStateProperty<int>(StateBroker, 10);
-            var coins = new ObservableStateProperty<int>(StateBroker, 10);
-                
+            var stars = new ObservableStateProperty<int>(10);
+            var coins = new ObservableStateProperty<int>(10);
+            
+            StateBroker.AddProperty(stars);
+            StateBroker.AddProperty(coins);
+
             GameState = new GameState(stars, coins);
         }
 
