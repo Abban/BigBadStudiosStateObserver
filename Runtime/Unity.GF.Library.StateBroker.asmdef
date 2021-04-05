@@ -1,5 +1,5 @@
 {
-    "name": "Unity.GF.Library.StateObserver",
+    "name": "Unity.GF.Library.StateBroker",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
